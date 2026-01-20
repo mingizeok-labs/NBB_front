@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBB 숫자야구 - Play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-wrapper">
+        <nav class="left-sidebar">
+            <div class="logo">⚾ NBB</div>
+            <ul class="menu-list">
+                <li class="active" onclick="location.href='NBB_main.html'">Play</li>
+                <li onclick="location.href='NBB_ranking.html'">랭킹 보드</li>
+                <li>로그아웃</li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <section class="game-container">
+                <header>
+                    <h1>숫자야구</h1>
+                    <div class="toggle-wrapper">
+                        <span>🏆 랭킹</span>
+                        <input type="checkbox" id="ranking-toggle">
+                    </div>
+                </header>
+                <div id="chat-box" class="chat-box">
+                    <div class="message pc-message">
+                        <div class="bubble">숫자야구 게임을 시작합니다!<br>1~9 사이 숫자 3개를 입력하세요.</div>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="user-input" placeholder="숫자 4개 입력..." maxlength="4">
+                    <button id="send-btn" onclick="sendMessage()">↑</button>
+                </div>
+            </section>
+
+            <aside class="right-panel" id="ranking-panel">
+                <h3>My Best Record</h3>
+                <div style="margin: 15px 0; padding: 15px; background: #f8f9fa; border-radius: 12px;">
+                    <span style="font-size: 1.2rem; font-weight: bold;">#14</span>
+                    <p style="font-size: 0.8rem; color: #666;">최고 기록: 4회 성공</p>
+                </div>
+                <h3>🏆 TOP 10</h3>
+                <ul id="ranking-list" style="list-style:none; margin-top:10px;">
+                    </ul>
+            </aside>
+        </main>
+    </div>
+    <script src="NBB_script.js"></script>
+</body>
+</html>
