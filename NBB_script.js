@@ -63,12 +63,15 @@ async function sendMessage() {
 
                 const restart = confirm("새 게임을 바로 시작하시겠습니까?");
                 if (restart) {
-                    initGame(); // /start 호출 → 새 숫자 발급 + 화면 초기화
+                    initGame(); // 사용자가 원할 때만 새 게임 시작
                 } else {
                     appendMessage('pc', "게임 종료. 새 게임은 새로고침으로 시작할 수 있습니다.");
-                    userInput.disabled = true; // 더 이상 입력 못함
+                    userInput.disabled = true; // 입력 막기
+                    // 🔹 reset 호출 → 세션 삭제만
+                    (async () => {
+                        await fetch(`${API_BASE_URL}/reset`, { method: 'POST', credentials: 'include' });
+                    })();
                 }
-
             }
 
             // 전체 히스토리 표시 (선택 사항)
@@ -122,6 +125,7 @@ document.addEventListener('DOMContentLoaded', initGame);
 const giveUpBtn = document.getElementById('give-up-btn');
 
 giveUpBtn.addEventListener('click', async () => {
+    e.preventDefault(); // 혹시 모를 기본 동작 방지
     const confirmGiveUp = confirm("게임을 포기하시겠습니까? 세션이 초기화됩니다.");
     if (confirmGiveUp) {
         chatBox.innerHTML = "";        // 화면 초기화
