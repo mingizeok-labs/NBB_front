@@ -8,17 +8,32 @@ const fetchOptions = {
 };
 
 // 1. 게임 시작
+// [시작] 게임 진행을 위한 초기화 (기존 initGame 유지 및 보완)
 async function initGame() {
     try {
-        const response = await fetch(`${API_BASE_URL}/start`, { 
-            method: 'POST',
-            ...fetchOptions 
-        });
-        await response.json(); // 필요시 로그용
+        await fetch(`${API_BASE_URL}/start`, { method: 'POST', ...fetchOptions });
+        
+        chatBox.innerHTML = "";     // 화면 비우기
+        userInput.disabled = false; // 입력창 활성화
+        userInput.focus();          // 바로 입력 가능하게 포커스
+        
         appendMessage('pc', "⚾ 게임이 시작되었습니다! <br>0~9 사이 숫자 4개를 입력하세요.");
     } catch (error) {
         console.error("시작 에러:", error);
         appendMessage('pc', "❌ 서버 연결에 실패했습니다.");
+    }
+}
+
+// [종료] 완전 끝내기 및 세션 삭제
+async function terminateSession() {
+    try {
+        await fetch(`${API_BASE_URL}/reset`, { method: 'POST', ...fetchOptions });
+        
+        userInput.disabled = true;  // 입력창 막기
+        userInput.value = "";
+        appendMessage('pc', "🚫 게임이 완전히 종료되었습니다. 다시 시작하려면 새로고침 버튼을 눌러주세요.");
+    } catch (error) {
+        console.error("종료 에러:", error);
     }
 }
 
@@ -61,17 +76,20 @@ async function sendMessage() {
             if (data.status === 'end') {
                 appendMessage('pc', "정답입니다!");
 
-                const restart = confirm("새 게임을 바로 시작하시겠습니까?");
-                if (restart) {
-                    initGame(); // 사용자가 원할 때만 새 게임 시작
-                } else {
-                    appendMessage('pc', "게임 종료. 새 게임은 새로고침으로 시작할 수 있습니다.");
-                    userInput.disabled = true; // 입력 막기
-                    // 🔹 reset 호출 → 세션 삭제만
-                    (async () => {
-                        await fetch(`${API_BASE_URL}/reset`, { method: 'POST', credentials: 'include' });
-                    })();
-                }
+                // 메시지가 화면에 찍힐 시간을 주기 위해 100ms 정도 지연
+                setTimeout(async () => {
+                    const restart = confirm("새 게임을 바로 시작하시겠습니까?");
+                    
+                    if (restart) {
+                        // 사용자가 원하면 start API 호출하여 새 게임 세팅
+                        await initGame(); 
+                    } else {
+                        // 원하지 않으면 미리 정의해둔 종료 함수 호출
+                        // 이 안에서 /reset 호출 및 userInput.disabled 처리가 다 일어납니다.
+                        await terminateSession();
+                        appendMessage('pc', "게임이 종료되었습니다. 다시 하시려면 새로고침을 해주세요.");
+                    }
+                }, 100);
             }
 
             // 전체 히스토리 표시 (선택 사항)
@@ -124,13 +142,10 @@ document.addEventListener('DOMContentLoaded', initGame);
 
 const giveUpBtn = document.getElementById('give-up-btn');
 
-giveUpBtn.addEventListener('click', async (e) => {
-    // e.preventDefault(); // 혹시 모를 기본 동작 방지
-    const confirmGiveUp = confirm("게임을 포기하시겠습니까? 세션이 초기화됩니다.");
-    if (confirmGiveUp) {
-        chatBox.innerHTML = "";        // 화면 초기화
-        userInput.disabled = false;    // 새 게임 입력 대비
-        await fetch(`${API_BASE_URL}/reset`, { method: 'POST', credentials: 'include' });
-        appendMessage('pc', "세션이 초기화되었습니다. 새 게임을 시작하려면 시작 버튼을 눌러주세요.");
+giveUpBtn.addEventListener('click', async () => {
+    if (confirm("정말 종료하시겠습니까? 데이터가 사라집니다.")) {
+        await terminateSession();
+        chatBox.innerHTML = "";
+        appendMessage('pc', "세션이 삭제되었습니다.");
     }
 });
