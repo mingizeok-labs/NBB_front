@@ -59,7 +59,16 @@ async function sendMessage() {
 
             // 홈런 또는 게임 종료 체크
             if (data.status === 'end') {
-                appendMessage('pc', "🎊 홈런! 정답입니다!");
+                appendMessage('pc', "정답입니다!");
+
+                const restart = confirm("게임이 종료되었습니다. 새 게임을 시작하시겠습니까?");
+                if (restart) {
+                    resetGame(); // 세션 초기화 + 새 게임
+                } else {
+                    appendMessage('pc', "게임 종료. 새로 시작하려면 새 게임 버튼을 눌러주세요.");
+                    // 이 시점에서 추가 입력은 막아야 함
+                    userInput.disabled = true;
+                }
             }
 
             // 전체 히스토리 표시 (선택 사항)
@@ -109,3 +118,14 @@ userInput.addEventListener('keypress', (e) => {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', initGame);
+
+const giveUpBtn = document.getElementById('give-up-btn');
+
+giveUpBtn.addEventListener('click', async () => {
+    const confirmGiveUp = confirm("게임을 포기하시겠습니까? 세션이 초기화됩니다.");
+    if (confirmGiveUp) {
+        chatBox.innerHTML = "";        // 화면 초기화
+        userInput.disabled = false;    // 새 게임 대비 입력 가능
+        await resetGame();             // 세션 초기화 + 새 게임 시작
+    }
+});
