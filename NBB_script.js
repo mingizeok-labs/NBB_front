@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', initGame);
 const giveUpBtn = document.getElementById('give-up-btn');
 
 giveUpBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // 혹시 모를 기본 동작 방지
+    // e.preventDefault(); // 혹시 모를 기본 동작 방지
     const confirmGiveUp = confirm("게임을 포기하시겠습니까? 세션이 초기화됩니다.");
     if (confirmGiveUp) {
         chatBox.innerHTML = "";        // 화면 초기화
