@@ -176,6 +176,11 @@ header {
 .ranking-table th { background: #4a69ad; color: white; padding: 12px; }
 .ranking-table td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
 
+/* 키패드 버튼과 전송, 종료 버튼 모두에 적용 */
+.key-row button, #send-btn, #give-up-btn {
+    touch-action: manipulation; /* 더블 탭 줌 방지 + 반응속도 UP */
+}
+
 /* [8. 모바일 대응] */
 @media (max-width: 768px) {
     body { overflow: auto; height: auto; }
