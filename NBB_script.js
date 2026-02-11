@@ -149,3 +149,21 @@ giveUpBtn.addEventListener('click', async () => {
         appendMessage('pc', "세션이 삭제되었습니다.");
     }
 });
+
+// 숫자 버튼 클릭 시 호출되는 함수
+function appendNum(n) {
+    // 기존에 선언된 userInput 변수를 그대로 사용합니다.
+    if (userInput.value.length < 4) {
+        userInput.value += n;
+    }
+}
+
+// ← 버튼 클릭 시 호출되는 함수
+function deleteNum() {
+    userInput.value = userInput.value.slice(0, -1);
+}
+
+// C 버튼 클릭 시 호출되는 함수
+function clearAll() {
+    userInput.value = "";
+}
