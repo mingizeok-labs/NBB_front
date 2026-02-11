@@ -208,29 +208,35 @@ header {
 
     .input-area {
         display: flex;
-        gap: 5px; /* 간격을 최소화해서 공간 확보 */
-        padding: 10px; /* 좌우 여백을 줄임 */
-        width: 100%;
-        box-sizing: border-box;
+        flex-direction: row; /* 가로로 배치 */
+        align-items: center;
+        gap: 8px;           /* 요소 사이 간격 */
+        padding: 10px 12px; /* 좌우 여백 최적화 */
+        width: 100%;        /* 부모 너비에 맞춤 */
+        box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
     }
     .input-area input {
-        /* 너비를 고정하지 않고, 버튼들이 차지하고 남은 공간만 쓰도록 설정 */
-        flex: 1; 
-        min-width: 0; /* 중요: flex 아이템이 찌그러질 수 있게 허용 */
-        width: auto;
-        font-size: 14px !important; /* 글자 크기를 살짝 줄여 여유 공간 확보 */
+        flex: 1;            /* ⭐ 핵심: 버튼들이 차지하고 남은 공간만 사용 */
+        min-width: 0;       /* ⭐ 핵심: input의 최소 너비를 0으로 풀어줘야 밀리지 않음 */
+        height: 42px;
+        font-size: 16px;    /* 모바일 줌 방지 */
+        border-radius: 8px;
     }
     .input-area button {
-        /* 버튼들이 찌그러지지 않도록 고정 */
-        flex-shrink: 0; 
-        white-space: nowrap; /* 텍스트가 줄바꿈되지 않게 함 */
+        flex-shrink: 0;     /* ⭐ 핵심: 버튼은 절대 찌그러지거나 밀리지 않음 */
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
     }
     #send-btn {
-        width: 45px; /* 전송 버튼 너비 약간 축소 */
+        width: 45px;        /* 전송 버튼 고정 너비 */
     }
     #give-up-btn {
-        width: 55px; /* 종료 버튼 너비 약간 축소 */
-        padding: 0 5px;
+        width: 50px;        /* 종료 버튼 고정 너비 */
         font-size: 0.75rem;
+        padding: 0;
+        background-color: #ff3b30;
     }
 }
