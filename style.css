@@ -190,10 +190,7 @@ header {
     .menu-list li { padding: 6px 10px; font-size: 0.8rem; margin-bottom: 0; }
 
     .main-content { padding: 10px; flex-direction: column; height: auto; }
-    .game-container {
-        height: 100svh; /* Small Viewport Height 사용 */
-        max-height: -webkit-fill-available;
-    }
+    .game-container { width: 100%; height: 90svh; border-radius: 20px; }
 
     header { padding: 10px 15px; }
     header h1 { font-size: 1.1rem; }
@@ -210,26 +207,30 @@ header {
     }
 
     .input-area {
-        flex-shrink: 0;
-        padding: 8px 12px 4px 12px; /* 하단 패딩을 줄여서 공간 확보 */
-        height: 54px; /* 영역 전체 높이 고정 */
         display: flex;
-        align-items: center; /* 내부 요소들 수직 중앙 정렬 */
-        background: #fff;
+        gap: 5px; /* 간격을 최소화해서 공간 확보 */
+        padding: 10px; /* 좌우 여백을 줄임 */
+        width: 100%;
+        box-sizing: border-box;
     }
     .input-area input {
-        height: 40px;      /* 높이 고정 */
-        line-height: normal; /* 모바일 사파리 보정 */
-        padding: 0 12px;   /* 상하 패딩 제거, 좌우만 */
-        font-size: 16px !important; /* 모바일 줌 방지 및 가독성 */
-        display: flex;
-        align-items: center;
+        /* 너비를 고정하지 않고, 버튼들이 차지하고 남은 공간만 쓰도록 설정 */
+        flex: 1; 
+        min-width: 0; /* 중요: flex 아이템이 찌그러질 수 있게 허용 */
+        width: auto;
+        font-size: 14px !important; /* 글자 크기를 살짝 줄여 여유 공간 확보 */
     }
     .input-area button {
-        height: 40px;
-        min-width: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        /* 버튼들이 찌그러지지 않도록 고정 */
+        flex-shrink: 0; 
+        white-space: nowrap; /* 텍스트가 줄바꿈되지 않게 함 */
+    }
+    #send-btn {
+        width: 45px; /* 전송 버튼 너비 약간 축소 */
+    }
+    #give-up-btn {
+        width: 55px; /* 종료 버튼 너비 약간 축소 */
+        padding: 0 5px;
+        font-size: 0.75rem;
     }
 }
